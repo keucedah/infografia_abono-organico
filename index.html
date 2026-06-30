@@ -182,13 +182,45 @@
             font-style: italic;
             color: var(--marron-tierra);
         }
-    </style>
+    
+.fullscreen-btn{
+position:absolute;
+top:20px;
+right:20px;
+z-index:200;
+background:#2E7D32;
+color:#fff;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+box-shadow:0 3px 8px rgba(0,0,0,.25);
+}
+.fullscreen-btn:hover{background:#1B5E20;}
+.presentation-container:fullscreen{
+width:100vw;
+height:100vh;
+max-width:none;
+aspect-ratio:auto;
+border-radius:0;
+}
+.presentation-container:-webkit-full-screen{
+width:100vw;
+height:100vh;
+max-width:none;
+aspect-ratio:auto;
+border-radius:0;
+}
+
+</style>
 </head>
 <body>
 
     <div class="presentation-container">
         
         <!-- Logo en la parte superior central -->
+        <button id="fullscreenBtn" class="fullscreen-btn">👁 Ver</button>
         <img src="https://www.dropbox.com/scl/fi/qqt7r1yondhp7l0cvb9d0/LOGO2.png?rlkey=7cmmpsdaj4p7fhc0a0ozix93q&raw=1" alt="Logo de la clase" class="logo-overlay">
 
         <!-- Diapositiva 1: Portada -->
@@ -329,6 +361,25 @@
                 showSlide(currentSlide);
             }
         }
-    </script>
+    
+const fsBtn=document.getElementById('fullscreenBtn');
+const container=document.querySelector('.presentation-container');
+
+async function toggleFullscreen(){
+ try{
+  if(!document.fullscreenElement){
+    await container.requestFullscreen();
+  }else{
+    await document.exitFullscreen();
+  }
+ }catch(e){console.error(e);}
+}
+fsBtn.addEventListener('click',toggleFullscreen);
+
+document.addEventListener('fullscreenchange',()=>{
+ fsBtn.textContent=document.fullscreenElement?'✖ Cerrar':'👁 Ver';
+});
+
+</script>
 </body>
 </html>
